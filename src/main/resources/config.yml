@@ -1,0 +1,44 @@
+# InstanceAPI Configuration File
+
+# Template directory path (relative to plugin folder)
+template-directory: "worlds"
+
+# Auto-delete settings
+auto-delete:
+  # Enable automatic deletion when instance is empty
+  enabled: true
+  # Delay in ticks before deleting empty instance (20 ticks = 1 second)
+  empty-delay-ticks: 20
+
+# World loading settings
+world-load-delay-ticks: 40
+
+# Instance limits
+limits:
+  # Maximum instances per player (0 = unlimited)
+  max-per-player: 3
+  # Maximum total instances (0 = unlimited)
+  max-total: 100
+
+# Messages
+messages:
+  prefix: "&a[&e InstanceAPI &a]&r "
+  instance-created: "&aInstance world created successfully!"
+  instance-deleted: "&aInstance world deleted successfully!"
+  instance-creating: "&eCreating instance world..."
+  instance-deleting: "&eDeleting instance world..."
+  teleported: "&aYou have been teleported to the instance."
+  no-permission: "&cYou don't have permission to do that."
+  player-not-found: "&cPlayer not found."
+  template-not-found: "&cTemplate world ''{0}'' not found in {1}."
+  already-has-instance: "&cYou already have an active instance."
+  no-active-instance: "&cYou don't have an active instance."
+  world-not-found: "&cWorld not found."
+  max-instances-reached: "&cMaximum instance limit reached."
+  instance-limit-player: "&cYou have reached your instance limit ({0})."
+  instance-limit-server: "&cServer instance limit reached ({0})."
+  teleport-failed: "&cTeleportation failed. Player is offline."
+  server-shutdown: "&eInstance world closed due to server shutdown."
+
+# Debug mode
+debug: false

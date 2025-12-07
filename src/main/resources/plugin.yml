@@ -1,0 +1,55 @@
+name: InstanceAPI
+version: ${version}
+main: com.eisiadev.instanceapi.InstanceAPIPlugin
+api-version: '1.20'
+author: EisiaDev
+description: Universal instance world management plugin
+
+softdepend:
+  - Skript
+
+commands:
+  instanceworld:
+    description: Manage instance worlds
+    usage: |
+      /instanceworld create <template> [player]
+      /instanceworld delete [worldname]
+      /instanceworld list
+      /instanceworld tp <worldname>
+    aliases: [iw, inst]
+
+permissions:
+  instanceapi.*:
+    description: All InstanceAPI permissions
+    default: op
+    children:
+      instanceapi.create: true
+      instanceapi.delete: true
+      instanceapi.delete.others: true
+      instanceapi.list: true
+      instanceapi.teleport: true
+      instanceapi.admin: true
+  
+  instanceapi.create:
+    description: Create instance worlds
+    default: op
+  
+  instanceapi.delete:
+    description: Delete own instance worlds
+    default: op
+  
+  instanceapi.delete.others:
+    description: Delete other players' instance worlds
+    default: op
+  
+  instanceapi.list:
+    description: List instance worlds
+    default: op
+  
+  instanceapi.teleport:
+    description: Teleport to instance worlds
+    default: op
+  
+  instanceapi.admin:
+    description: Admin access to all features
+    default: op
