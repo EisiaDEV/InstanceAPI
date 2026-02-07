@@ -9,6 +9,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.WorldCreator;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -21,7 +22,6 @@ import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Level;
-import java.util.stream.Collectors;
 
 public class InstanceManager {
 
@@ -178,20 +178,21 @@ public class InstanceManager {
         World world = Bukkit.getWorld(worldName);
 
         if (world != null) {
-            // Teleport players out
             World mainWorld = Bukkit.getWorlds().get(0);
             for (Player p : world.getPlayers()) {
                 p.teleport(mainWorld.getSpawnLocation());
                 p.sendMessage(plugin.getConfigManager().getMessage("instance-deleted"));
             }
 
-            // Unload world
-            if (!Bukkit.unloadWorld(world, false)) {
-                plugin.getLogger().severe("Failed to unload world: " + worldName);
-                return;
-            }
-        } else {
-            plugin.getLogger().info("World " + worldName + " already unloaded, skipping unload step");
+            world.getEntities().stream()
+                    .filter(entity -> !(entity instanceof Player))
+                    .forEach(Entity::remove);
+
+            Bukkit.getScheduler().runTaskLater(plugin, () -> {
+                if (!Bukkit.unloadWorld(world, false)) {
+                    plugin.getLogger().severe("Failed to unload world: " + worldName);
+                }
+            }, 5L);
         }
 
         // Delete files asynchronously
@@ -203,6 +204,13 @@ public class InstanceManager {
                     plugin.getLogger().info("Deleted instance files: " + worldName);
                 } else {
                     plugin.getLogger().info("World folder " + worldName + " already deleted");
+                }
+
+                // Delete WorldGuard data folder
+                File worldGuardFolder = new File(plugin.getDataFolder().getParentFile(), "WorldGuard/worlds/" + worldName);
+                if (worldGuardFolder.exists()) {
+                    FileUtils.deleteDirectory(worldGuardFolder);
+                    plugin.getLogger().info("Deleted WorldGuard data: " + worldName);
                 }
 
                 // Delete data file

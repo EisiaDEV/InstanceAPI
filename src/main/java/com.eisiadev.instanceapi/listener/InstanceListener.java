@@ -78,7 +78,7 @@ public class InstanceListener implements Listener {
                     plugin.getLogger().info("[AUTO-DELETE] Deleting empty instance: " + worldName);
                     plugin.getInstanceManager().deleteInstance(worldName);
                 }
-            }, 60L); // RuneInstance와 동일하게 60틱
+            }, 20L); // RuneInstance와 동일하게 60틱
         }
     }
 
